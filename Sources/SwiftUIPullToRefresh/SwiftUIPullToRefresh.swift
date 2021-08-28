@@ -67,21 +67,24 @@ public struct RefreshableScrollView<Progress, Content>: View where Progress: Vie
   let onRefresh: OnRefresh // the refreshing action
   let progress: RefreshProgressBuilder<Progress> // custom progress view
   let content: () -> Content // the ScrollView content
+  let showsIndicators: Bool
 
   @State private var state = RefreshState.waiting // the current state
 
   // We use a custom constructor to allow for usage of a @ViewBuilder for the content
-  public init(onRefresh: @escaping OnRefresh,
+  public init(showsIndicators: Bool,
+              onRefresh: @escaping OnRefresh,
               @ViewBuilder progress: @escaping RefreshProgressBuilder<Progress>,
               @ViewBuilder content: @escaping () -> Content) {
     self.onRefresh = onRefresh
     self.progress = progress
     self.content = content
+    self.showsIndicators = showsIndicators
   }
 
   public var body: some View {
     // The root view is a regular ScrollView
-    ScrollView {
+    ScrollView(showsIndicators: showsIndicators) {
       // The ZStack allows us to position the PositionIndicator,
       // the content and the loading view, all on top of each other.
       ZStack(alignment: .top) {
