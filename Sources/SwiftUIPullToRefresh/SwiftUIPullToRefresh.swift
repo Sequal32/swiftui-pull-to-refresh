@@ -148,9 +148,11 @@ public struct RefreshableScrollView<Progress, Content>: View where Progress: Vie
 // Extension that uses default RefreshActivityIndicator so that you don't have to
 // specify it every time.
 public extension RefreshableScrollView where Progress == RefreshActivityIndicator {
-    init(onRefresh: @escaping OnRefresh,
+    init(showsIndicators: Bool = true,
+         onRefresh: @escaping OnRefresh,
          @ViewBuilder content: @escaping () -> Content) {
-        self.init(onRefresh: onRefresh,
+        self.init(showsIndicators: showsIndicators,
+                  onRefresh: onRefresh,
                   progress: { state in
                     RefreshActivityIndicator(isAnimating: state == .loading) {
                         $0.hidesWhenStopped = false
